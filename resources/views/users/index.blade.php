@@ -7,9 +7,12 @@
         <div class="pull-left">
             <h2>Users Management</h2>
         </div>
-        <div class="pull-right">
-            <a class="btn btn-success" href="{{ route('users.create') }}"> Create New User</a>
-        </div>
+
+        @if(Auth::user()->hasRole('Admin'))
+          <div class="pull-right">
+              <a class="btn btn-success" href="{{ route('users.create') }}"> Create New User</a>
+          </div>
+        @endif
     </div>
 </div>
 
@@ -56,5 +59,4 @@
 {!! $data->render() !!}
 
 
-<p class="text-center text-primary"><small>Tutorial by ItSolutionStuff.com</small></p>
 @endsection

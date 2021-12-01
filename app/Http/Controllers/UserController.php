@@ -1,15 +1,15 @@
 <?php
     
 namespace App\Http\Controllers;
-    
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\User;
-use Spatie\Permission\Models\Role;
+
 use DB;
-use Hash;
+use Hash;   
+use App\Models\User; 
 use Illuminate\Support\Arr;
-    
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
+ 
 class UserController extends Controller
 {
     /**
@@ -19,7 +19,16 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $data = User::orderBy('id','DESC')->paginate(5);
+        $user = auth()->user();
+        if($user->hasRole('Admin'))
+        {
+            $data = User::orderBy('id','DESC')->paginate(5);
+        }
+        else
+        {
+            $data = User::where('id',$user->id)->paginate(5);
+            //dd($data);
+        }
         return view('users.index',compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
